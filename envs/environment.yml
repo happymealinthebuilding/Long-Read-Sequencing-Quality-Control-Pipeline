@@ -1,0 +1,13 @@
+name: bioinfo_assessment
+channels:
+  - bioconda
+  - conda-forge
+
+dependencies:
+  - python=3.10
+  - pandas
+  - matplotlib
+  - seaborn
+  - biopython
+  - nanoplot
+  - snakemake

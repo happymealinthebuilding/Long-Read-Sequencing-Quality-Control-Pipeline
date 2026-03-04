@@ -1,0 +1,47 @@
+FASTQ = "data/VREC1013.fastq.gz"
+
+
+rule all:
+    input:
+        "results/read_metrics.csv",
+        "results/gc_distribution.png",
+        "results/length_distribution.png",
+        "results/quality_distribution.png",
+        "results/summary_statistics.csv",
+        directory("results/nanoplot")
+
+
+rule nanoplot_qc:
+    input:
+        FASTQ
+    output:
+        directory("results/nanoplot")
+    shell:
+        """
+        NanoPlot --fastq {input} --outdir results/nanoplot
+        """
+
+
+rule calculate_metrics:
+    input:
+        FASTQ
+    output:
+        "results/read_metrics.csv"
+    shell:
+        """
+        python scripts/read_metrics.py {input} {output}
+        """
+
+
+rule plot_metrics:
+    input:
+        "results/read_metrics.csv"
+    output:
+        "results/gc_distribution.png",
+        "results/length_distribution.png",
+        "results/quality_distribution.png",
+        "results/summary_statistics.csv"
+    shell:
+        """
+        python scripts/plot_metrics.py {input} results
+        """
